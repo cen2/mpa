@@ -1,0 +1,39 @@
+@import "var";
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  line-height: @base-line-height;
+  font-size: @base-font-size;
+  color: @base-font-color;
+  background: @base-background;
+}
+
+body {
+  font-family: @base-font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+  -webkit-overflow-scrolling: touch;
+  user-select: none;
+}
+
+a {
+  color: lighten(@base-font-color, 15%);
+  text-decoration: none;
+  &:active {
+    color: darken(@base-font-color, 15%);
+  }
+}
+
+button, input, textarea, select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  border: none;
+  background: #fff;
+}
