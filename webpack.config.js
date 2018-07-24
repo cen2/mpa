@@ -180,7 +180,7 @@ module.exports = new Promise((resolve, reject) => {
 
       console.log(chalk.green('  Build mode : ' + process.env.NODE_ENV + '.\n'))
 
-      console.log(chalk.green('  Build server_proxy : ' + config.server + '.\n'))
+      console.log(chalk.green('  Build server : ' + config.proxy[config.server] + '.\n'))
 
       resolve(webpackConfig)
     }
