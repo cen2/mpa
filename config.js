@@ -1,7 +1,7 @@
 module.exports = {
-  server: process.env.npm_config_server || '/api',
+  minimize: true,
   proxy: {
     '/api': 'https://api.github.com'
   },
-  minimize: true
+  proxyServer: process.env.npm_config_proxy || '/api'
 }

@@ -1,5 +1,5 @@
 const config = require('./config')
-const modules = require('./src/modules')
+const views = require('./src/views')
 const path = require('path')
 const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
@@ -23,11 +23,11 @@ function generatePluginsByMode() {
   }
 }
 
-const entries = Object.keys(modules)
+const entries = Object.keys(views)
 
 function getEntry() {
   let entryMap = {}
-  entries.forEach(key => entryMap[key] = `./src/modules/${key}/index.js`)
+  entries.forEach(key => entryMap[key] = `./src/views/${key}/index.js`)
   return entryMap
 }
 
@@ -36,7 +36,7 @@ const HtmlWebpackPluginMap = entries.map((key) => {
     filename: `./${key}.html`,
     template: `./src/index.html`,
     chunks: [`${key}`, 'common'],
-    title: modules[key]
+    title: views[key]
   })
 })
 
@@ -90,7 +90,7 @@ const webpackConfig = {
     ...ExtractTextPluginMap,
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.SERVER_URL': JSON.stringify(config.proxy[config.server])
+      'process.env.SERVER_URL': JSON.stringify(config.proxy[config.proxyServer])
     }),
     new webpack.ProvidePlugin({
       Vue: 'vue'
@@ -180,7 +180,7 @@ module.exports = new Promise((resolve, reject) => {
 
       console.log(chalk.green('  Build mode : ' + process.env.NODE_ENV + '.\n'))
 
-      console.log(chalk.green('  Build server : ' + config.proxy[config.server] + '.\n'))
+      console.log(chalk.green('  Build server : ' + config.proxy[config.proxyServer] + '.\n'))
 
       resolve(webpackConfig)
     }

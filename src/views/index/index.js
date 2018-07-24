@@ -6,8 +6,6 @@ import inject from '../../assets/scripts/inject'
 
 Vue.use(inject)
 
-console.log(process.env.SERVER_URL)
-
 Vue.config.productionTip = false
 
 new Vue({
