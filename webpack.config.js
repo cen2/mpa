@@ -27,7 +27,7 @@ const entries = Object.keys(modules)
 
 function getEntry() {
   let entryMap = {}
-  entries.forEach((key) => entryMap[key] = `./src/modules/${key}/index.js`)
+  entries.forEach(key => entryMap[key] = `./src/modules/${key}/index.js`)
   return entryMap
 }
 
@@ -44,6 +44,22 @@ const ExtractTextPluginMap = entries.map((key) => {
   return new ExtractTextPlugin('./css/[name].[hash].css')
 })
 
+function devServerProxy() {
+  let proxy = {}
+  let keys = Object.keys(config.proxy)
+  keys.forEach(key => {
+    proxy[key] = {
+      target: config.proxy[key],
+      changeOrigin: true,
+      secure: false,
+      pathRewrite: {
+        [`^${key}`]: ''
+      }
+    }
+  })
+  return proxy
+}
+
 const webpackConfig = {
   mode: process.env.NODE_ENV,
   devtool: process.env.NODE_ENV === 'development' ? 'cheap-module-eval-source-map' : 'source-map',
@@ -55,16 +71,7 @@ const webpackConfig = {
     hot: false,
     overlay: true,
     stats: 'errors-only',
-    proxy: {
-      '/api': {
-        target: 'https://api.github.com',
-        changeOrigin: true,
-        secure: false,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
+    proxy: devServerProxy()
   },
   resolve: {
     alias: {
@@ -83,7 +90,7 @@ const webpackConfig = {
     ...ExtractTextPluginMap,
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.SERVER_URL': JSON.stringify(config.server)
+      'process.env.SERVER_URL': JSON.stringify(config.proxy[config.server])
     }),
     new webpack.ProvidePlugin({
       Vue: 'vue'
